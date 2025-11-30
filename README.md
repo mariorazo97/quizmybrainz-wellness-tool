@@ -21,13 +21,13 @@ A dual-interface wellness assessment tool designed for educators and students (a
 <summary>Click to view screenshots</summary>
 
 ### Landing Page
-![Landing Page](ScreenShot07.png)
+![Landing Page](ScreenShoot07.png)
 ---
 ![Landing Page](ScreenShot01.png)
 
 ### Student Quiz Interface
 ![Student Quiz - Question 1](ScreenShot05.png)
-![Student Quiz - Question 2](ScreenShot08.png)
+![Student Quiz - Question 2](ScreenShoot08.png)
 
 ### Student Results
 ![Student Results](ScreenShot06.png)
