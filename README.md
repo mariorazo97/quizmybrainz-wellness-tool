@@ -40,6 +40,15 @@ A dual-interface wellness assessment tool designed for educators and students (a
 
 </details>
 
+**[Launch Live App](https://mariorazo97.github.io/quizmybrainz-wellness-tool/)**
+
+## 📖 About
+This is a Single-Page Application (SPA) designed to support social-emotional learning (SEL) in the classroom. It addresses two critical needs in modern education:
+1.  **Student Regulation:** Moving beyond simple "mood checks" to **Interoception** (listening to the body's signals of hunger, energy, and safety).
+2.  **Educator Well-being:** Identifying signs of **"High-Functioning Burnout"**—a state where teachers perform well outwardly while suffering from physiological depletion.
+
+
+
 ## 🎯 Overview
 
 **Body & Mind Detective** is a single-file HTML application that provides two distinct assessment pathways:
