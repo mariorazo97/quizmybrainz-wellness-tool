@@ -19,17 +19,17 @@ A dual-interface wellness assessment tool designed for educators and students (a
 ![Landing Page](docs/ScreenShot01.png)
 
 ### Student Quiz Interface
-![Student Quiz - Question 1](docs/ScreenShot02.png)
-![Student Quiz - Question 2](docs/ScreenShot03.png)
+![Student Quiz - Question 1](ScreenShot02.png)
+![Student Quiz - Question 2](ScreenShot03.png)
 
 ### Student Results
-![Student Results](docs/ScreenShot04.png)
+![Student Results](ScreenShot04.png)
 
 ### Teacher Assessment
-![Teacher Assessment](docs/ScreenShot05.png)
+![Teacher Assessment](ScreenShot05.png)
 
 ### Teacher Results & Recovery Toolkit
-![Teacher Results](docs/ScreenShot06.png)
+![Teacher Results](ScreenShot06.png)
 
 </details>
 
