@@ -10,6 +10,29 @@ A dual-interface wellness assessment tool designed for educators and students (a
 ![CSS3](https://img.shields.io/badge/CSS3-1572B6?logo=css3&logoColor=white)
 ![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?logo=javascript&logoColor=black)
 
+## 📸 Screenshots
+
+<details>
+<summary>Click to view screenshots</summary>
+
+### Landing Page
+![Landing Page](docs/ScreenShot01.png)
+
+### Student Quiz Interface
+![Student Quiz - Question 1](docs/ScreenShot02.png)
+![Student Quiz - Question 2](docs/ScreenShot03.png)
+
+### Student Results
+![Student Results](docs/ScreenShot04.png)
+
+### Teacher Assessment
+![Teacher Assessment](docs/ScreenShot05.png)
+
+### Teacher Results & Recovery Toolkit
+![Teacher Results](docs/ScreenShot06.png)
+
+</details>
+
 ## 🎯 Overview
 
 **Body & Mind Detective** is a single-file HTML application that provides two distinct assessment pathways:
