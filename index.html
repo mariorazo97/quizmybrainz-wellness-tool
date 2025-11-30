@@ -1,0 +1,784 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Body & Mind Detective | Wellness Assessment Tool</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Crimson+Pro:wght@400;600;700&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            /* Design System Variables */
+            --gold-primary: #D4AF37;
+            --gold-dark: #B5952F; /* Darkened for better contrast */
+            --red-orange: #FF4500;
+            --red-dark: #CC3700;
+            --cream-bg: #F9F7F2;
+            --warm-white: #FFFBF5;
+            --shadow-gold: rgba(212, 175, 55, 0.25);
+            --text-dark: #2C2416;
+            --text-medium: #5C5444;
+            --glass-bg: rgba(255, 255, 255, 0.75);
+            --glass-border: rgba(255, 255, 255, 0.95);
+            --focus-outline: 3px solid #2C2416;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        /* Accessibility: Improved visibility */
+        body {
+            font-family: 'DM Sans', 'Segoe UI', Verdana, sans-serif;
+            background: linear-gradient(135deg, #F9F7F2 0%, #FFF8E7 50%, #F5EDD6 100%);
+            min-height: 100vh;
+            color: var(--text-dark);
+            font-size: 18px; /* Increased base font size for older eyes */
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* Focus states for accessibility */
+        button:focus-visible, input:focus-visible {
+            outline: var(--focus-outline);
+            outline-offset: 4px;
+        }
+
+        .page {
+            display: none;
+            opacity: 0;
+            animation: fadeIn 0.5s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+            padding-bottom: 4rem;
+        }
+
+        .page.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 2rem 1.5rem;
+        }
+
+        h1, h2, h3 {
+            font-family: 'Crimson Pro', serif;
+            color: var(--gold-dark);
+        }
+
+        h1 {
+            font-size: clamp(2.5rem, 5vw, 4rem);
+            font-weight: 700;
+            text-align: center;
+            margin-bottom: 1rem;
+            line-height: 1.1;
+        }
+
+        h2 {
+            font-size: clamp(1.8rem, 4vw, 2.5rem);
+            margin-bottom: 1.5rem;
+        }
+
+        /* Enhanced Glass Card */
+        .glass-card {
+            background: var(--glass-bg);
+            backdrop-filter: blur(25px);
+            -webkit-backdrop-filter: blur(25px);
+            border: 2px solid var(--glass-border);
+            border-radius: 24px;
+            padding: clamp(1.5rem, 5vw, 3rem);
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.05),
+                        0 2px 10px var(--shadow-gold);
+            transition: transform 0.3s ease;
+        }
+
+        /* Button Improvements */
+        .btn {
+            background: linear-gradient(135deg, var(--gold-primary), var(--gold-dark));
+            color: white;
+            border: none;
+            padding: 1.25rem 2.5rem;
+            border-radius: 16px;
+            font-size: 1.2rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.2s ease-in-out;
+            box-shadow: 0 4px 15px var(--shadow-gold);
+            font-family: 'DM Sans', sans-serif;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+
+        .btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px var(--shadow-gold);
+            filter: brightness(1.05);
+        }
+
+        .btn:active {
+            transform: scale(0.98);
+        }
+
+        .btn-large {
+            width: 100%;
+            padding: 2rem;
+            font-size: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        /* Student Quiz Improvements */
+        .emoji-options {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+            gap: 1.5rem;
+            margin: 2rem 0;
+        }
+
+        .emoji-btn {
+            background: white;
+            border: 3px solid rgba(212, 175, 55, 0.2);
+            border-radius: 24px;
+            padding: 2rem 1rem;
+            cursor: pointer;
+            transition: all 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.8rem;
+        }
+
+        .emoji-icon {
+            font-size: 3.5rem;
+            filter: drop-shadow(0 4px 8px rgba(0,0,0,0.1));
+        }
+
+        .emoji-btn span {
+            font-weight: 700;
+            color: var(--text-medium);
+            font-size: 1rem;
+        }
+
+        .emoji-btn:hover {
+            border-color: var(--gold-primary);
+            transform: translateY(-5px);
+        }
+
+        .emoji-btn.selected {
+            background: #FFF9E5;
+            border-color: var(--gold-dark);
+            box-shadow: 0 0 0 4px rgba(212, 175, 55, 0.2);
+            transform: scale(0.98);
+        }
+
+        /* Progress Bar */
+        .progress-container {
+            width: 100%;
+            height: 16px;
+            background: rgba(0,0,0,0.05);
+            border-radius: 20px;
+            overflow: hidden;
+            margin-bottom: 2.5rem;
+        }
+
+        .progress-bar {
+            height: 100%;
+            background: linear-gradient(90deg, var(--gold-primary), var(--red-orange));
+            transition: width 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+        }
+
+        /* Teacher Slider Improvements */
+        .slider-question {
+            margin-bottom: 2rem;
+            padding: 2rem;
+            background: rgba(255,255,255,0.6);
+            border-radius: 16px;
+            border-left: 6px solid var(--gold-primary);
+        }
+
+        .intensity-slider {
+            width: 100%;
+            height: 12px;
+            border-radius: 10px;
+            background: #e0e0e0;
+            outline: none;
+            -webkit-appearance: none; /* Safari, Chrome, and Edge */
+            -moz-appearance: none;    /* Older Firefox (optional for modern dev) */
+            appearance: none;         /* Standard property */
+            margin-top: 1rem;
+        }
+
+        .intensity-slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            background: var(--red-orange);
+            cursor: pointer;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+            border: 3px solid white;
+        }
+
+        /* Strategies & Results */
+        .result-card {
+            background: white;
+            border-radius: 20px;
+            padding: 2.5rem;
+            margin-bottom: 2rem;
+            border-left: 8px solid var(--gold-primary);
+            box-shadow: 0 4px 20px rgba(0,0,0,0.04);
+        }
+
+        .result-card.high-risk {
+            border-left-color: var(--red-orange);
+        }
+
+        /* Breathing Exercise */
+        .breathing-container {
+            text-align: center;
+            padding: 2rem;
+            background: rgba(255,255,255,0.5);
+            border-radius: 20px;
+            margin-top: 2rem;
+        }
+
+        .breathing-bubble {
+            width: 160px;
+            height: 160px;
+            margin: 2rem auto;
+            background: radial-gradient(circle at 30% 30%, var(--gold-primary), var(--gold-dark));
+            border-radius: 50%;
+            animation: breathe 8s infinite ease-in-out;
+            box-shadow: 0 0 40px var(--shadow-gold);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 700;
+            font-size: 1.4rem;
+            position: relative;
+        }
+
+        /* Animation text logic */
+        .breathing-bubble::after {
+            content: 'Inhale';
+            animation: breatheText 8s infinite ease-in-out;
+        }
+
+        @keyframes breathe {
+            0%, 100% { transform: scale(1); opacity: 0.9; }
+            50% { transform: scale(1.4); opacity: 1; }
+        }
+
+        @keyframes breatheText {
+            0%, 95%, 100% { content: 'Inhale'; }
+            45%, 55% { content: 'Exhale'; }
+        }
+
+        /* New Exercise: Grounding Game Modal */
+        .interactive-modal {
+            display: none;
+            margin-top: 1.5rem;
+            background: white;
+            padding: 1.5rem;
+            border-radius: 16px;
+            border: 2px dashed var(--gold-primary);
+        }
+        
+        .grounding-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin: 10px 0;
+            cursor: pointer;
+            padding: 10px;
+            border-radius: 8px;
+            transition: background 0.2s;
+        }
+        
+        .grounding-item:hover { background: #f0f0f0; }
+        .grounding-item.checked { text-decoration: line-through; opacity: 0.6; }
+        .grounding-checkbox { width: 24px; height: 24px; border: 2px solid var(--gold-dark); border-radius: 50%; display: grid; place-items: center; }
+        .grounding-item.checked .grounding-checkbox::after { content: '✓'; color: var(--gold-dark); font-weight: bold; }
+
+        /* Mobile Responsive */
+        @media (max-width: 600px) {
+            h1 { font-size: 2.2rem; }
+            .btn-large { padding: 1.5rem; font-size: 1.2rem; }
+            .emoji-btn { padding: 1rem; }
+            .glass-card { padding: 1.5rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <button class="btn" id="homeBtn" style="position: fixed; top: 1rem; left: 1rem; z-index: 1000; padding: 0.8rem 1.2rem; display: none;" onclick="goHome()" aria-label="Return to Home">
+        ← Home
+    </button>
+
+    <div id="landingPage" class="page active" role="main">
+        <div class="container">
+            <h1>Body & Mind Detective</h1>
+            <p class="text-center" style="font-size: 1.25rem; max-width: 600px; margin: 0 auto 2rem;">
+                A safe space to check your battery, your feelings, and your stress levels.
+            </p>
+            
+            <div class="glass-card">
+                <button class="btn btn-large" onclick="startTeacherQuiz()">
+                    👨‍🏫 I am a Teacher / Leader
+                </button>
+                <button class="btn btn-large" style="background: linear-gradient(135deg, #4da6ff, #007acc); margin-bottom: 0;" onclick="startStudentQuiz()">
+                    🧒 I am a Student
+                </button>
+            </div>
+            
+            <p style="text-align: center; margin-top: 2rem; font-size: 0.9rem; color: #888;">
+                Responses are private and for your awareness only.
+            </p>
+        </div>
+    </div>
+
+    <div id="studentQuizPage" class="page" role="main" aria-live="polite">
+        <div class="container">
+            <h2 class="text-center">Body Detective Quiz 🕵️</h2>
+            
+            <div class="glass-card">
+                <div class="progress-container">
+                    <div class="progress-bar" id="studentProgress" style="width: 25%"></div>
+                </div>
+
+                <div class="question active" data-question="1">
+                    <p class="text-center" style="font-size: 1.5rem; margin-bottom: 1.5rem;">🍽️ <strong>How is your tummy?</strong></p>
+                    <div class="emoji-options">
+                        <button class="emoji-btn" onclick="selectStudentAnswer(1, 'hungry')">
+                            <span class="emoji-icon">🍎</span>
+                            <span>Hungry / Empty</span>
+                        </button>
+                        <button class="emoji-btn" onclick="selectStudentAnswer(1, 'justright')">
+                            <span class="emoji-icon">😌</span>
+                            <span>Just Right</span>
+                        </button>
+                        <button class="emoji-btn" onclick="selectStudentAnswer(1, 'stuffed')">
+                            <span class="emoji-icon">🤢</span>
+                            <span>Achy / Full</span>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="question" data-question="2" style="display:none;">
+                    <p class="text-center" style="font-size: 1.5rem; margin-bottom: 1.5rem;">💪 <strong>How are your muscles?</strong></p>
+                    <div class="emoji-options">
+                        <button class="emoji-btn" onclick="selectStudentAnswer(2, 'explode')">
+                            <span class="emoji-icon">🏃</span>
+                            <span>Want to Run!</span>
+                        </button>
+                        <button class="emoji-btn" onclick="selectStudentAnswer(2, 'jelly')">
+                            <span class="emoji-icon">🫠</span>
+                            <span>Heavy / Jelly</span>
+                        </button>
+                        <button class="emoji-btn" onclick="selectStudentAnswer(2, 'ready')">
+                            <span class="emoji-icon">✨</span>
+                            <span>Strong / Ready</span>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="question" data-question="3" style="display:none;">
+                    <p class="text-center" style="font-size: 1.5rem; margin-bottom: 1.5rem;">🫁 <strong>How is your breathing?</strong></p>
+                    <div class="emoji-options">
+                        <button class="emoji-btn" onclick="selectStudentAnswer(3, 'tight')">
+                            <span class="emoji-icon">😤</span>
+                            <span>Fast / Tight</span>
+                        </button>
+                        <button class="emoji-btn" onclick="selectStudentAnswer(3, 'easy')">
+                            <span class="emoji-icon">🌬️</span>
+                            <span>Slow / Easy</span>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="question" data-question="4" style="display:none;">
+                    <p class="text-center" style="font-size: 1.5rem; margin-bottom: 1.5rem;">🧠 <strong>What is the weather in your head?</strong></p>
+                    <div class="emoji-options">
+                        <button class="emoji-btn" onclick="selectStudentAnswer(4, 'stormy')">
+                            <span class="emoji-icon">⛈️</span>
+                            <span>Stormy</span>
+                        </button>
+                        <button class="emoji-btn" onclick="selectStudentAnswer(4, 'foggy')">
+                            <span class="emoji-icon">🌫️</span>
+                            <span>Foggy</span>
+                        </button>
+                        <button class="emoji-btn" onclick="selectStudentAnswer(4, 'sunny')">
+                            <span class="emoji-icon">☀️</span>
+                            <span>Sunny</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="studentResultsPage" class="page" role="main">
+        <div class="container">
+            <h2 class="text-center">Your Body Report</h2>
+            
+            <div class="glass-card">
+                <div class="result-card" id="studentResultCard">
+                    <h3 id="studentResultTitle"></h3>
+                    <p id="studentResultDescription" style="font-size: 1.2rem;"></p>
+                    <div id="studentStrategy"></div>
+                </div>
+
+                <div id="groundingModal" class="interactive-modal">
+                    <h4>🖐️ The 5-4-3-2-1 Game</h4>
+                    <p>Look around and click these as you find them:</p>
+                    <div class="grounding-list">
+                        </div>
+                </div>
+
+                <div class="breathing-container">
+                    <h3>Try this Breathing Bubble</h3>
+                    <div class="breathing-bubble"></div>
+                    <p>Follow the bubble. Breathe in when it gets big, breathe out when it gets small.</p>
+                </div>
+
+                <button class="btn btn-large mt-3" style="margin-top: 2rem;" onclick="goHome()">Start Over</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="teacherQuizPage" class="page" role="main">
+        <div class="container">
+            <h2 class="text-center">High-Functioning Burnout Check</h2>
+            <p class="text-center" style="margin-bottom: 2rem;">Answer honestly. These are "Red Flags" that high-performers often miss.</p>
+            
+            <div class="glass-card">
+                <div class="progress-container">
+                    <div class="progress-bar" id="teacherProgress" style="width: 0%"></div>
+                </div>
+
+                <div class="slider-question">
+                    <p><strong>1. Sensory Gating Failure:</strong> Do noises that usually don't bother you (tapping pencils, humming) suddenly cause instant rage?</p>
+                    <div style="display: flex; gap: 1rem; margin-bottom: 1rem;">
+                        <button class="btn btn-secondary" style="flex:1; background:white; color:var(--text-dark); border:1px solid #ccc;" onclick="selectTeacherAnswer(0, 'yes', this)">Yes</button>
+                        <button class="btn btn-secondary" style="flex:1; background:white; color:var(--text-dark); border:1px solid #ccc;" onclick="selectTeacherAnswer(0, 'no', this)">No</button>
+                    </div>
+                    <div class="intensity-wrapper" id="intensity-0" style="display:none; animation: fadeIn 0.3s ease;">
+                        <label>How intense is this feeling? (1-10)</label>
+                        <input type="range" min="1" max="10" value="5" class="intensity-slider" oninput="updateTeacherProgress()">
+                    </div>
+                </div>
+
+                <div class="slider-question">
+                    <p><strong>2. Revenge Bedtime Procrastination:</strong> Do you stay up late scrolling despite being exhausted, just to feel a sense of "freedom"?</p>
+                    <div style="display: flex; gap: 1rem; margin-bottom: 1rem;">
+                        <button class="btn btn-secondary" style="flex:1; background:white; color:var(--text-dark); border:1px solid #ccc;" onclick="selectTeacherAnswer(1, 'yes', this)">Yes</button>
+                        <button class="btn btn-secondary" style="flex:1; background:white; color:var(--text-dark); border:1px solid #ccc;" onclick="selectTeacherAnswer(1, 'no', this)">No</button>
+                    </div>
+                    <div class="intensity-wrapper" id="intensity-1" style="display:none; animation: fadeIn 0.3s ease;">
+                        <label>How intense is this feeling? (1-10)</label>
+                        <input type="range" min="1" max="10" value="5" class="intensity-slider" oninput="updateTeacherProgress()">
+                    </div>
+                </div>
+
+                <div class="slider-question">
+                    <p><strong>3. The "Yes" Reflex:</strong> Do you say "yes" to new tasks immediately, then feel dread or resentment the moment you say it?</p>
+                    <div style="display: flex; gap: 1rem; margin-bottom: 1rem;">
+                        <button class="btn btn-secondary" style="flex:1; background:white; color:var(--text-dark); border:1px solid #ccc;" onclick="selectTeacherAnswer(2, 'yes', this)">Yes</button>
+                        <button class="btn btn-secondary" style="flex:1; background:white; color:var(--text-dark); border:1px solid #ccc;" onclick="selectTeacherAnswer(2, 'no', this)">No</button>
+                    </div>
+                    <div class="intensity-wrapper" id="intensity-2" style="display:none; animation: fadeIn 0.3s ease;">
+                        <label>How intense is this feeling? (1-10)</label>
+                        <input type="range" min="1" max="10" value="5" class="intensity-slider" oninput="updateTeacherProgress()">
+                    </div>
+                </div>
+
+                <div class="slider-question">
+                    <p><strong>4. Dissociative Auto-Pilot:</strong> Do you sometimes teach a whole lesson and have zero memory of doing it?</p>
+                    <div style="display: flex; gap: 1rem; margin-bottom: 1rem;">
+                        <button class="btn btn-secondary" style="flex:1; background:white; color:var(--text-dark); border:1px solid #ccc;" onclick="selectTeacherAnswer(3, 'yes', this)">Yes</button>
+                        <button class="btn btn-secondary" style="flex:1; background:white; color:var(--text-dark); border:1px solid #ccc;" onclick="selectTeacherAnswer(3, 'no', this)">No</button>
+                    </div>
+                    <div class="intensity-wrapper" id="intensity-3" style="display:none; animation: fadeIn 0.3s ease;">
+                        <label>How intense is this feeling? (1-10)</label>
+                        <input type="range" min="1" max="10" value="5" class="intensity-slider" oninput="updateTeacherProgress()">
+                    </div>
+                </div>
+
+                 <div class="slider-question">
+                    <p><strong>5. Anhedonia:</strong> When you finish a big project, do you feel "nothing" (numbness) instead of happiness/satisfaction?</p>
+                    <div style="display: flex; gap: 1rem; margin-bottom: 1rem;">
+                        <button class="btn btn-secondary" style="flex:1; background:white; color:var(--text-dark); border:1px solid #ccc;" onclick="selectTeacherAnswer(4, 'yes', this)">Yes</button>
+                        <button class="btn btn-secondary" style="flex:1; background:white; color:var(--text-dark); border:1px solid #ccc;" onclick="selectTeacherAnswer(4, 'no', this)">No</button>
+                    </div>
+                    <div class="intensity-wrapper" id="intensity-4" style="display:none; animation: fadeIn 0.3s ease;">
+                        <label>How intense is this feeling? (1-10)</label>
+                        <input type="range" min="1" max="10" value="5" class="intensity-slider" oninput="updateTeacherProgress()">
+                    </div>
+                </div>
+
+                <button class="btn btn-large" onclick="submitTeacherQuiz()">Analyze Results</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="teacherResultsPage" class="page" role="main">
+        <div class="container">
+            <h2 class="text-center">Burnout Assessment</h2>
+            
+            <div class="glass-card">
+                <div class="result-card" id="teacherResultCard">
+                    <h3 id="teacherResultTitle"></h3>
+                    <p id="teacherResultDescription"></p>
+                </div>
+
+                <div id="recoveryToolkit" style="display: none;">
+                    <h3 style="margin: 2rem 0 1rem; color: var(--gold-dark);">🛠️ Recovery Toolkit</h3>
+                    
+                    <div style="background: white; border-radius: 12px; padding: 1.5rem; margin-bottom: 1rem; box-shadow: 0 4px 10px rgba(0,0,0,0.05);">
+                        <h4 style="color: var(--gold-dark);">🌊 Physiological: The Vagus Nerve Reset</h4>
+                        <p><strong>The Fix:</strong> Splash cold water on your face (lips to hairline) or hold a cold bottle to your neck for 30 seconds.</p>
+                        <p style="font-size: 0.9rem; margin-top:0.5rem;"><em>Why? This triggers the 'Mammalian Diving Reflex', instantly lowering heart rate.</em></p>
+                    </div>
+
+                    <div style="background: white; border-radius: 12px; padding: 1.5rem; margin-bottom: 1rem; box-shadow: 0 4px 10px rgba(0,0,0,0.05);">
+                        <h4 style="color: var(--gold-dark);">🛡️ Boundaries: The Delay Script</h4>
+                        <p><strong>The Fix:</strong> Memorize this: <em>"I need to check my capacity before I commit. I will get back to you by [Time]."</em></p>
+                    </div>
+
+                    <div style="background: white; border-radius: 12px; padding: 1.5rem; margin-bottom: 1rem; box-shadow: 0 4px 10px rgba(0,0,0,0.05);">
+                        <h4 style="color: var(--gold-dark);">👁️ Sensory: Visual Palming</h4>
+                        <p><strong>The Fix:</strong> Rub hands together until warm. Cup them over closed eyes (don't press). Stare into the blackness.</p>
+                        <div style="margin-top: 1rem;">
+                            <button class="btn" style="padding: 0.5rem 1rem; font-size: 1rem;" onclick="startPalmingTimer(this)">Start 60s Timer</button>
+                        </div>
+                    </div>
+                    
+                    <div style="background: white; border-radius: 12px; padding: 1.5rem; box-shadow: 0 4px 10px rgba(0,0,0,0.05);">
+                        <h4 style="color: var(--gold-dark);">📊 Structural: Eisenhower Matrix</h4>
+                        <p><strong>The Fix:</strong> Sort tasks: 1. Urgent/Important (Do), 2. Important/Not Urgent (Schedule), 3. Urgent/Not Important (Delegate).</p>
+                    </div>
+                </div>
+
+                <button class="btn btn-large" style="margin-top: 2rem;" onclick="goHome()">Back to Start</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // State
+        let studentAnswers = {};
+        let teacherAnswers = Array(5).fill(null);
+
+        // --- Navigation ---
+        function showPage(pageId) {
+            document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+            const page = document.getElementById(pageId);
+            page.classList.add('active');
+            window.scrollTo(0,0);
+            
+            const homeBtn = document.getElementById('homeBtn');
+            homeBtn.style.display = pageId === 'landingPage' ? 'none' : 'block';
+        }
+
+        function goHome() {
+            // Reset
+            studentAnswers = {};
+            teacherAnswers = Array(5).fill(null);
+            document.querySelectorAll('.emoji-btn').forEach(b => b.classList.remove('selected'));
+            document.querySelectorAll('.btn-secondary').forEach(b => {
+                b.style.background = 'white';
+                b.style.color = 'var(--text-dark)';
+                b.style.borderColor = '#ccc';
+            });
+            document.querySelectorAll('.intensity-wrapper').forEach(d => d.style.display = 'none');
+            
+            // Reset question visibility
+            document.querySelectorAll('.question').forEach(q => q.style.display = 'none');
+            document.querySelector('.question[data-question="1"]').style.display = 'block';
+            
+            showPage('landingPage');
+        }
+
+        function startStudentQuiz() { showPage('studentQuizPage'); updateStudentProgress(); }
+        function startTeacherQuiz() { showPage('teacherQuizPage'); updateTeacherProgress(); }
+
+        // --- Student Logic ---
+        function selectStudentAnswer(qNum, val) {
+            studentAnswers[qNum] = val;
+            const currentQ = document.querySelector(`.question[data-question="${qNum}"]`);
+            
+            // UI Feedback
+            currentQ.querySelectorAll('.emoji-btn').forEach(b => b.classList.remove('selected'));
+            event.currentTarget.classList.add('selected');
+
+            // Delay for animation
+            setTimeout(() => {
+                if(qNum < 4) {
+                    currentQ.style.display = 'none';
+                    document.querySelector(`.question[data-question="${qNum+1}"]`).style.display = 'block';
+                    updateStudentProgress();
+                } else {
+                    calcStudentResults();
+                }
+            }, 600);
+        }
+
+        function updateStudentProgress() {
+            const count = Object.keys(studentAnswers).length;
+            document.getElementById('studentProgress').style.width = (count/4)*100 + '%';
+        }
+
+        function calcStudentResults() {
+            showPage('studentResultsPage');
+            const rTitle = document.getElementById('studentResultTitle');
+            const rDesc = document.getElementById('studentResultDescription');
+            const rStrat = document.getElementById('studentStrategy');
+            const modal = document.getElementById('groundingModal');
+            
+            modal.style.display = 'none'; // reset
+
+            // Logic Tree
+            if (studentAnswers[2] === 'explode' || studentAnswers[3] === 'tight') {
+                // Hyper-Arousal
+                rTitle.textContent = "⚡ You have lots of Energy!";
+                rDesc.textContent = "Your engine is running fast. Let's do some 'Heavy Work' to use that power.";
+                rStrat.innerHTML = `
+                    <div style="background:#FFF9E5; padding:1.5rem; border-radius:12px; margin-top:1rem;">
+                        <h4>🧱 Wall Pushes</h4>
+                        <ol style="margin-left:1.5rem; margin-top:0.5rem;">
+                            <li>Stand by a wall.</li>
+                            <li>Push it as hard as you can for 10 seconds!</li>
+                            <li>Relax. Do it 3 times.</li>
+                        </ol>
+                    </div>
+                `;
+            } else if (studentAnswers[4] === 'stormy' || studentAnswers[4] === 'foggy') {
+                // Dysregulated
+                rTitle.textContent = "🌥️ The weather is a bit cloudy.";
+                rDesc.textContent = "You might feel worried or unfocused. Let's play a game to get your brain back here.";
+                rStrat.innerHTML = `<button class="btn" style="width:100%" onclick="setupGroundingGame()">🖐️ Play the 5-4-3-2-1 Game</button>`;
+            } else if (studentAnswers[1] === 'hungry' || studentAnswers[2] === 'jelly') {
+                // Depleted
+                rTitle.textContent = "🔋 Battery Low";
+                rDesc.textContent = "Your body needs fuel or a wake-up call.";
+                rStrat.innerHTML = `
+                    <div style="background:#E5F6FF; padding:1.5rem; border-radius:12px; margin-top:1rem;">
+                        <h4>🧠 Cross-Crawls</h4>
+                        <p>Stand up. Touch your right elbow to your left knee. Then left elbow to right knee. March slowly for 1 minute!</p>
+                        <hr style="margin:1rem 0; opacity:0.2">
+                        <p>💧 <strong>Don't forget:</strong> Drink some water!</p>
+                    </div>
+                `;
+            } else {
+                rTitle.textContent = "✨ All Systems Go!";
+                rDesc.textContent = "You are ready to learn. Keep listening to your body.";
+            }
+        }
+
+        // --- New Exercise: 5-4-3-2-1 Grounding ---
+        function setupGroundingGame() {
+            const modal = document.getElementById('groundingModal');
+            const list = modal.querySelector('.grounding-list');
+            modal.style.display = 'block';
+            
+            const items = [
+                "👀 Find 5 things you can see",
+                "🤚 Find 4 things you can touch",
+                "👂 Find 3 things you can hear",
+                "👃 Find 2 things you can smell",
+                "💖 Find 1 thing you love about yourself"
+            ];
+            
+            list.innerHTML = items.map(item => `
+                <div class="grounding-item" onclick="this.classList.toggle('checked')">
+                    <div class="grounding-checkbox"></div>
+                    <span>${item}</span>
+                </div>
+            `).join('');
+        }
+
+        // --- Teacher Logic ---
+        function selectTeacherAnswer(index, val, btn) {
+            teacherAnswers[index] = val;
+            
+            // Visual Toggle
+            const parent = btn.parentElement;
+            parent.querySelectorAll('.btn').forEach(b => {
+                b.style.background = 'white';
+                b.style.color = '#2C2416';
+                b.style.borderColor = '#ccc';
+            });
+            btn.style.background = val === 'yes' ? 'var(--red-orange)' : 'var(--gold-primary)';
+            btn.style.color = 'white';
+            btn.style.borderColor = 'transparent';
+
+            // Show Intensity Slider if Yes
+            const intensityDiv = document.getElementById(`intensity-${index}`);
+            intensityDiv.style.display = val === 'yes' ? 'block' : 'none';
+            
+            updateTeacherProgress();
+        }
+
+        function updateTeacherProgress() {
+            const answered = teacherAnswers.filter(a => a !== null).length;
+            document.getElementById('teacherProgress').style.width = (answered/5)*100 + '%';
+        }
+
+        function submitTeacherQuiz() {
+            if(teacherAnswers.includes(null)) {
+                alert("Please answer all 5 questions."); 
+                return;
+            }
+            
+            showPage('teacherResultsPage');
+            const yesCount = teacherAnswers.filter(a => a === 'yes').length;
+            const rCard = document.getElementById('teacherResultCard');
+            const rTitle = document.getElementById('teacherResultTitle');
+            const rDesc = document.getElementById('teacherResultDescription');
+            const toolkit = document.getElementById('recoveryToolkit');
+
+            if (yesCount >= 3) {
+                rCard.classList.add('high-risk');
+                rTitle.innerHTML = "⚠️ High Risk: Action Needed";
+                rDesc.innerHTML = `You have <strong>${yesCount}/5</strong> markers of High-Functioning Burnout. Your nervous system is over-compensating. You likely feel "wired but tired." Please use the toolkit below immediately.`;
+                toolkit.style.display = 'block';
+            } else if (yesCount >= 1) {
+                rCard.classList.remove('high-risk');
+                rTitle.innerHTML = "⚡ Moderate Risk";
+                rDesc.innerHTML = `You have <strong>${yesCount}</strong> warning signs. This is the best time to act—before it becomes a crash.`;
+                toolkit.style.display = 'block';
+            } else {
+                rCard.classList.remove('high-risk');
+                rTitle.innerHTML = "✅ Low Risk";
+                rDesc.innerHTML = "You are regulating well. Keep practicing boundaries to stay here.";
+                toolkit.style.display = 'none';
+            }
+        }
+
+        // New Teacher Exercise: Timer
+        function startPalmingTimer(btn) {
+            let timeLeft = 60;
+            btn.disabled = true;
+            const interval = setInterval(() => {
+                timeLeft--;
+                btn.textContent = `Relaxing... ${timeLeft}s`;
+                if(timeLeft <= 0) {
+                    clearInterval(interval);
+                    btn.textContent = "Done! Open eyes slowly.";
+                    btn.disabled = false;
+                }
+            }, 1000);
+        }
+    </script>
+</body>
+</html>
