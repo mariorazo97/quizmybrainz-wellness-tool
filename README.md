@@ -5,6 +5,11 @@ A dual-interface wellness assessment tool designed for educators and students (a
 [![Buy Me A Coffee](https://img.shields.io/badge/Buy%20Me%20A%20Coffee-Support%20Development-FFDD00?style=for-the-badge&logo=buy-me-a-coffee&logoColor=black)](https://buymeacoffee.com/quizmybrai7)
 [![Live Activity](https://img.shields.io/badge/Try%20Live%20Activity-QuizMyBrainz-D4AF37?style=for-the-badge&logo=google-chrome&logoColor=white)](https://quizmybrainz.com/qmbportal/quizzes/)
 
+![GitHub stars](https://img.shields.io/github/stars/mariorazo97/quizmybrainz-wellness-tool?style=social)
+![GitHub forks](https://img.shields.io/github/forks/mariorazo97/quizmybrainz-wellness-tool?style=social)
+
+---
+
 ![License](https://img.shields.io/badge/license-MIT-blue.svg)
 ![HTML5](https://img.shields.io/badge/HTML5-E34F26?logo=html5&logoColor=white)
 ![CSS3](https://img.shields.io/badge/CSS3-1572B6?logo=css3&logoColor=white)
@@ -16,20 +21,22 @@ A dual-interface wellness assessment tool designed for educators and students (a
 <summary>Click to view screenshots</summary>
 
 ### Landing Page
-![Landing Page](docs/ScreenShot01.png)
+![Landing Page](ScreenShot07.png)
+---
+![Landing Page](ScreenShot01.png)
 
 ### Student Quiz Interface
-![Student Quiz - Question 1](ScreenShot02.png)
-![Student Quiz - Question 2](ScreenShot03.png)
+![Student Quiz - Question 1](ScreenShot05.png)
+![Student Quiz - Question 2](ScreenShot08.png)
 
 ### Student Results
-![Student Results](ScreenShot04.png)
+![Student Results](ScreenShot06.png)
 
 ### Teacher Assessment
-![Teacher Assessment](ScreenShot05.png)
+![Teacher Assessment](ScreenShot03.png)
 
 ### Teacher Results & Recovery Toolkit
-![Teacher Results](ScreenShot06.png)
+![Teacher Results](ScreenShot04.png)
 
 </details>
 
@@ -206,6 +213,10 @@ For questions, suggestions, or collaboration inquiries:
 If you find this tool helpful, consider supporting its development:
 
 [![Buy Me A Coffee](https://img.shields.io/badge/Buy%20Me%20A%20Coffee-Support%20Development-FFDD00?style=for-the-badge&logo=buy-me-a-coffee&logoColor=black)](https://buymeacoffee.com/quizmybrai7)
+
+![GitHub stars](https://img.shields.io/github/stars/mariorazo97/quizmybrainz-wellness-tool?style=social)
+![GitHub forks](https://img.shields.io/github/forks/mariorazo97/quizmybrainz-wellness-tool?style=social)
+
 
 ### 🎮 Try More Educational Activities
 
